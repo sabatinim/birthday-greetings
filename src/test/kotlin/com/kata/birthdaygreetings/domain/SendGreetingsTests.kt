@@ -3,24 +3,13 @@ package com.kata.birthdaygreetings.domain
 import arrow.core.Either
 import arrow.core.Left
 import arrow.core.Right
-import arrow.core.flatMap
-import com.kata.birthdaygreetings.domain.SendGreetingsTests.MyError.*
-import org.assertj.core.api.Assertions
-import org.assertj.core.api.Assertions.*
+import com.kata.birthdaygreetings.domain.MyError.LoadEmployeesError
+import com.kata.birthdaygreetings.domain.MyError.SendMailError
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.fail
 import org.junit.jupiter.api.Test
 
 class SendGreetingsTests {
-
-    sealed class MyError {
-        data class LoadError(val msg: String) : MyError()
-        data class SendMailError(val msg: String) : MyError()
-    }
-
-    fun sendGreetings(
-        loadEmployees: () -> Either<MyError, Employees>,
-        filterEmployees: (Employees) -> BirthdayEmployees,
-        sendBirthdayMail: (BirthdayEmployees) -> Either<MyError, Unit>
-    ): () -> Either<MyError, Unit> = { loadEmployees().flatMap { sendBirthdayMail(filterEmployees(it)) } }
 
     @Test
     fun sendGreetingsOk() {
@@ -52,21 +41,14 @@ class SendGreetingsTests {
     internal fun loadEmployeeGoesInError() {
 
         val loadEmployeesGoesInError: () -> Either<MyError, Employees> = {
-            Left(LoadError("EROR"))
+            Left(LoadEmployeesError("EROR"))
         }
 
         val sendGreetings = sendGreetings(loadEmployeesGoesInError, UNUSED, ANOTHER_UNUSED)
 
         val result = sendGreetings()
 
-        assertThat(result).isEqualTo(Left(LoadError("EROR")))
-
-//        when (result) {
-//            is Either.Left -> when (result.a) {
-//                is LoadError -> assertThat(result.a).isEqualTo(Left(LoadError("EROR")))
-//            }
-//            is Either.Right -> fail("Shold Not reach here!!!")
-//        }
+        assertThat(result).isEqualTo(Left(LoadEmployeesError("EROR")))
     }
 
     @Test
