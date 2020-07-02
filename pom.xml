@@ -40,6 +40,21 @@
       <artifactId>arrow-fx</artifactId>
       <version>${arrow.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.2</version>
+    </dependency>
+
+    <dependency>
+      <groupId>dumbster</groupId>
+      <artifactId>dumbster</artifactId>
+      <version>1.6</version>
+      <scope>test</scope>
+    </dependency>
+
+
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -53,7 +68,6 @@
       <artifactId>assertj-core</artifactId>
       <version>3.15.0</version>
     </dependency>
-
   </dependencies>
 
   <build>
