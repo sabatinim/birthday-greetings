@@ -6,12 +6,17 @@ import arrow.core.Right
 import com.kata.birthdaygreetings.domain.*
 import java.io.File
 import java.io.FileNotFoundException
+import java.lang.Exception
 
 fun loadEmployeeFrom(fileName: String): () -> Either<MyError, Employees> = {
     try {
         Right(Employees(File(fileName).bufferedReader().readLines().map { toEmployee(it) }))
-    } catch (e: FileNotFoundException) {
+    }
+    catch (e: FileNotFoundException) {
         Left(MyError.LoadEmployeesError("File $fileName doesn't exist"))
+    }
+    catch (e: Exception) {
+        Left(MyError.LoadEmployeesError("Error ${e.message}"))
     }
 }
 

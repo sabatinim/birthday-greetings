@@ -21,6 +21,17 @@ class LoadEmployeeFromFileKtTest {
     }
 
     @Test
+    internal fun employeeNotValid() {
+
+        val loadEmployeeFromFile = loadEmployeeFrom("./target/test-classes/employeesNotValid.txt")
+
+        val result = loadEmployeeFromFile()
+
+        assertThat(result).isEqualTo(Left(MyError.LoadEmployeesError("Error For input string: \"address@email.com\"")))
+
+    }
+
+    @Test
     internal fun fileNotFound() {
         val loadEmployeeFromFile = loadEmployeeFrom("NOT_EXIXSTING_FILE")
 
