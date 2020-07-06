@@ -3,8 +3,7 @@ package com.kata.birthdaygreetings
 import com.dumbster.smtp.SimpleSmtpServer
 import com.kata.birthdaygreetings.domain.sendGreetings
 import com.kata.birthdaygreetings.domain.todayBirthdayEmployees
-import com.kata.birthdaygreetings.infrastructure.loadEmployeeFrom
-import com.kata.birthdaygreetings.infrastructure.sendMail
+import com.kata.birthdaygreetings.infrastructure.*
 
 fun main() {
 
@@ -14,7 +13,7 @@ fun main() {
         sendGreetings(
             loadEmployeeFrom("employeesStorage.txt"),
             todayBirthdayEmployees,
-            sendMail("localhost", 9999)
+            sendMail(toMailMessage { sessionFor(MailConfiguration("localhost", 9999)) })
         )
 
     val sendGreetingsResult = sendGreetings()
@@ -24,6 +23,4 @@ fun main() {
     mailServer.receivedEmail.forEach(::println)
 
     mailServer.stop()
-
-
 }
