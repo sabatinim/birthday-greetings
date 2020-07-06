@@ -12,4 +12,5 @@ fun sendGreetings(
     loadEmployees: () -> Either<MyError, Employees>,
     filterEmployees: (Employees) -> BirthdayEmployees,
     sendBirthdayMail: (BirthdayEmployees) -> Either<MyError, Unit>
-): () -> Either<MyError, Unit> = { loadEmployees().flatMap { sendBirthdayMail(filterEmployees(it)) } }
+): () -> Either<MyError, Unit> = { loadEmployees().flatMap { sendBirthdayMail(
+    filterEmployees(it)) } }

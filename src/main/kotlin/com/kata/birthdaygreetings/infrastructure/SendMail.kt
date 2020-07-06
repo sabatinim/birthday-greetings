@@ -14,16 +14,6 @@ import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
 
 
-fun sendMail(smtpHost: String, smtpPort: Long): (BirthdayEmployees) -> Either<MyError, Unit> = {
-    try {
-        it.employeeGroup
-            .map { sendmail(it, sessionFor(smtpHost, smtpPort)) }
-            .let { Right(Unit) }
-    } catch (e: Exception) {
-        Left(MyError.SendMailError(e.localizedMessage))
-    }
-}
-
 private fun sessionFor(smtpHost: String, smtpPort: Long): Session {
     val props = Properties()
     props["mail.smtp.host"] = smtpHost
@@ -39,4 +29,14 @@ private fun sendmail(e: Employee, session: Session) {
     msg.subject = "Subject: Happy birthday!"
     msg.setText("Happy birthday, dear ${e.firstName}!")
     Transport.send(msg)
+}
+
+fun sendMail(smtpHost: String, smtpPort: Long): (BirthdayEmployees) -> Either<MyError, Unit> = {
+    try {
+        it.employeeGroup
+            .map { sendmail(it, sessionFor(smtpHost, smtpPort)) }
+            .let { Right(Unit) }
+    } catch (e: Exception) {
+        Left(MyError.SendMailError(e.localizedMessage))
+    }
 }

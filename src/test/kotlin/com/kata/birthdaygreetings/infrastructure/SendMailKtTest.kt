@@ -2,16 +2,15 @@ package com.kata.birthdaygreetings.infrastructure
 
 import arrow.core.Either
 import arrow.core.Left
+import arrow.core.Right
 import com.dumbster.smtp.SimpleSmtpServer
 import com.dumbster.smtp.SmtpMessage
-import com.kata.birthdaygreetings.domain.BirthdayEmployees
-import com.kata.birthdaygreetings.domain.EmailAddress
-import com.kata.birthdaygreetings.domain.Employee
-import com.kata.birthdaygreetings.domain.MyError
+import com.kata.birthdaygreetings.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
 
 
 class SendMailKtTest {
@@ -31,23 +30,31 @@ class SendMailKtTest {
     @Test
     internal fun sendMail() {
 
-        val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
-            sendMail("localhost", 9999)
+        val now = LocalDateTime.now()
+        val todayDateOfBirth = DateOfBirth(now.dayOfMonth, now.monthValue, now.year)
 
-        sendMailTo(
-            BirthdayEmployees(
-                listOf(
-                    Employee(
-                        firstName = "NAME",
-                        emailAddress = EmailAddress("employee@email.com")
-                    )
-                )
+        val tomorrow = LocalDateTime.now().plusDays(1)
+        val tomorrowDateOfBirth = DateOfBirth(tomorrow.dayOfMonth, tomorrow.monthValue, tomorrow.year)
+
+        val employees = Employees(
+            listOf(
+                employeeBirthday(todayDateOfBirth,"TODAY_EMPLOYEE"),
+                employeeBirthday(tomorrowDateOfBirth,"TOMORROW_EMPLOYEE")
             )
         )
 
-        val message = mailServer.receivedEmail.next() as SmtpMessage
+        val loadEmployeeFromFile = { Right(employees)}
 
-        assertThat(message.body).isEqualTo("Happy birthday, dear NAME!")
+        val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
+            sendMail("localhost", 9999)
+
+        val sendGreetings = sendGreetings(loadEmployeeFromFile, todayBirthdayEmployees, sendMailTo)
+
+        sendGreetings()
+
+        val message = mailServer.receivedEmail.next() as SmtpMessage
+        assertThat(message.body).isEqualTo("Happy birthday, dear TODAY_EMPLOYEE!")
+
     }
 
     @Test
@@ -66,4 +73,10 @@ class SendMailKtTest {
 
         assertThat(result).isEqualTo(Left(MyError.SendMailError("Couldn't connect to host, port: localhost, 99; timeout -1")))
     }
+
+    private fun employeeBirthday(
+        todayDateOfBirth: DateOfBirth,
+        fistName: String
+    ) = Employee(firstName = fistName,dateOfBirth = todayDateOfBirth)
+
 }

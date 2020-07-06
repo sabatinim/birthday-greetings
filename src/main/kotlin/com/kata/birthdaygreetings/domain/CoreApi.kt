@@ -14,6 +14,12 @@ data class DateOfBirth(
     val month: Int,
     val year: Int
 )
+data class BirthDay(
+    val day: Int,
+    val month: Int
+
+)
+
 
 data class EmailAddress(val value: String)
 
@@ -23,12 +29,15 @@ data class BirthdayEmployees(val employeeGroup: List<Employee>)
 data class GreetingsEmail(val subject: String, val text: String)
 data class GreetingsEmails(val emailGroup: List<GreetingsEmail>)
 
-private val today: () -> DateOfBirth = {
+private val today: () -> BirthDay = {
     val now = LocalDateTime.now()
-    DateOfBirth(now.dayOfMonth, now.monthValue, now.year)
+    BirthDay(now.dayOfMonth, now.monthValue)
 }
 
-private fun isBirthday(whenIsYourBirthday: () -> DateOfBirth): (DateOfBirth) -> Boolean = { whenIsYourBirthday() == it }
+private fun isBirthday(whenIsYourBirthday: () -> BirthDay): (DateOfBirth) -> Boolean =
+    {
+        (whenIsYourBirthday().day == it.day) && whenIsYourBirthday().month == it.month
+    }
 
 private val todayIsYourBirthday: (DateOfBirth) -> Boolean = isBirthday(today)
 
