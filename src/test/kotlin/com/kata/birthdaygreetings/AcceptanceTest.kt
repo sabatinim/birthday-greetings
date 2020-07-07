@@ -9,7 +9,7 @@ import com.kata.birthdaygreetings.domain.*
 import com.kata.birthdaygreetings.infrastructure.MailConfiguration
 import com.kata.birthdaygreetings.infrastructure.sendMail
 import com.kata.birthdaygreetings.infrastructure.sessionFor
-import com.kata.birthdaygreetings.infrastructure.toMailMessage
+import com.kata.birthdaygreetings.infrastructure.emailMessageFrom
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
@@ -50,7 +50,7 @@ class AcceptanceTest {
         val session = sessionFor(MailConfiguration("localhost", 9999))
 
         val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
-        sendMail(toMailMessage { session })
+        sendMail(emailMessageFrom (session))
 
         val sendGreetings =
             sendGreetings(
@@ -74,7 +74,7 @@ class AcceptanceTest {
         val session = sessionFor(MailConfiguration("localhost", 99))
 
         val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
-            sendMail(toMailMessage { session })
+            sendMail(emailMessageFrom (session))
 
         val result = sendMailTo(
             BirthdayEmployees(

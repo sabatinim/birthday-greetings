@@ -13,7 +13,7 @@ fun main() {
         sendGreetings(
             loadEmployeeFrom("employeesStorage.txt"),
             todayBirthdayEmployees,
-            sendMail(toMailMessage { sessionFor(MailConfiguration("localhost", 9999)) })
+            sendMail(emailMessageFrom (sessionFor(MailConfiguration("localhost", 9999))))
         )
 
     val sendGreetingsResult = sendGreetings()

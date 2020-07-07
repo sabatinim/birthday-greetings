@@ -26,7 +26,7 @@ data class EmailAddress(val value: String)
 data class Employees(val employeeGroup: List<Employee>)
 data class BirthdayEmployees(val employeeGroup: List<Employee>)
 
-data class GreetingsEmail(val subject: String, val body: String, val emailAddress: String)
+data class GreetingsMessage(val subject: String, val body: String, val recipient: String)
 
 private val today: () -> BirthDay = {
     val now = LocalDateTime.now()
