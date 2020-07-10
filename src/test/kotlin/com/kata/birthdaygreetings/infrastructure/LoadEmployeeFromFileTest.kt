@@ -6,7 +6,7 @@ import com.kata.birthdaygreetings.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class LoadEmployeeFromFileKtTest {
+class LoadEmployeeFromFileTest {
 
     @Test
     internal fun loadEmployeeFromFile() {

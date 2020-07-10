@@ -15,6 +15,10 @@ import java.time.LocalDateTime
 
 class AcceptanceTest {
 
+    val TODAY = LocalDateTime.now()
+    val TOMORROW = TODAY.plusDays(1)
+    val WRONG_PORT: Long = 99
+
     lateinit var mailServer: SimpleSmtpServer
 
     @BeforeEach
@@ -26,9 +30,6 @@ class AcceptanceTest {
     internal fun tearDown() {
         mailServer.stop()
     }
-
-    val TODAY = LocalDateTime.now()
-    val TOMORROW = TODAY.plusDays(1)
 
     @Test
     internal fun oneEmployeeIsBornTodayAnotherIsNoBornToday() {
@@ -44,14 +45,11 @@ class AcceptanceTest {
             )
         }
 
-        val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
-        sendMailWith("localhost",9999)
-
-        val sendGreetings =
-            sendGreetings(
+        val sendGreetings: () -> Either<MyError, Unit> =
+            sendGreetingsWith(
                 inMemoryLoadEmployee,
                 todayBirthdayEmployees,
-                sendMailTo
+                sendMailWith("localhost",9999)
             )
 
         val result = sendGreetings()
@@ -63,20 +61,27 @@ class AcceptanceTest {
 
     }
 
-
     @Test
     internal fun mailConnectionError() {
 
-        val sendMailTo: (BirthdayEmployees) -> Either<MyError, Unit> =
-            sendMailWith("localhost", 99)
-
-        val result = sendMailTo(
-            BirthdayEmployees(
-                listOf(
-                    Employee()
+        val inMemoryLoadEmployee: () -> Either<Nothing, Employees> = {
+            Right(
+                Employees(
+                    listOf(
+                        employeeBirthday(dateOfBirth(TODAY), "TODAY_EMPLOYEE")
+                    )
                 )
             )
-        )
+        }
+
+        val sendGreetings: () -> Either<MyError, Unit> =
+            sendGreetingsWith(
+                inMemoryLoadEmployee,
+                todayBirthdayEmployees,
+                sendMailWith("localhost", WRONG_PORT)
+            )
+
+        val result = sendGreetings()
 
         assertThat(result).isEqualTo(Left(MyError.SendMailError("Couldn't connect to host, port: localhost, 99; timeout -1")))
     }

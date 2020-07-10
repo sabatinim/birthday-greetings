@@ -8,7 +8,7 @@ sealed class MyError {
     data class SendMailError(val msg: String) : MyError()
 }
 
-fun sendGreetings(
+fun sendGreetingsWith(
     loadEmployees: () -> Either<MyError, Employees>,
     filterEmployees: (Employees) -> BirthdayEmployees,
     sendBirthdayNotificationTo: (BirthdayEmployees) -> Either<MyError, Unit>
