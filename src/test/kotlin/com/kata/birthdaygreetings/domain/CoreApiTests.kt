@@ -6,36 +6,31 @@ import java.time.LocalDateTime
 
 class CoreApiTests {
 
+    val TODAY = DateOfBirth(LocalDateTime.now().dayOfMonth, LocalDateTime.now().monthValue, LocalDateTime.now().year)
+    val TOMORROW = DateOfBirth(LocalDateTime.now().plusDays(1).dayOfMonth, LocalDateTime.now().plusDays(1).monthValue, LocalDateTime.now().plusDays(1).year)
+
     @Test
     internal fun filterEmployees() {
-        val now = LocalDateTime.now()
-        val todayDateOfBirth = DateOfBirth(now.dayOfMonth, now.monthValue, now.year)
-
-        val tomorrow = LocalDateTime.now().plusDays(1)
-        val tomorrowDateOfBirth = DateOfBirth(tomorrow.dayOfMonth, tomorrow.monthValue, tomorrow.year)
 
         val employees = Employees(
             listOf(
-                employeeBirthday(todayDateOfBirth),
-                employeeBirthday(tomorrowDateOfBirth)
+                employeeBirthday(TODAY),
+                employeeBirthday(TOMORROW)
             )
         )
 
         val birthdayEmployees = todayBirthdayEmployees(employees)
         assertThat(birthdayEmployees)
-            .isEqualTo(BirthdayEmployees(listOf(employeeBirthday(todayDateOfBirth))))
+            .isEqualTo(BirthdayEmployees(listOf(employeeBirthday(TODAY))))
     }
 
     @Test
     internal fun noBirthdayEmployees() {
 
-        val tomorrow = LocalDateTime.now().plusDays(1)
-        val tomorrowDateOfBirth = DateOfBirth(tomorrow.dayOfMonth, tomorrow.monthValue, tomorrow.year)
-
         val employees = Employees(
             listOf(
-                employeeBirthday(tomorrowDateOfBirth),
-                employeeBirthday(tomorrowDateOfBirth)
+                employeeBirthday(TOMORROW),
+                employeeBirthday(TOMORROW)
             )
         )
 
