@@ -43,5 +43,5 @@ private fun birthdayEmployees(isBirthDay: (DateOfBirth) -> Boolean): (Employees)
     BirthdayEmployees(it.employeeGroup.filter { employee -> isBirthDay(employee.dateOfBirth) })
 }
 
-//PUBLIC FUNCTIONS
+//PUBLIC API
 val todayBirthdayEmployees: (Employees) -> BirthdayEmployees = birthdayEmployees(todayIsYourBirthday)
