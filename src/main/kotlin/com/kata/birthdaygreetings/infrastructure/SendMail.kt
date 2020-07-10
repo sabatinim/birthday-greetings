@@ -27,7 +27,7 @@ private fun greetingsMessageFrom(e: Employee): GreetingsMessage =
         e.emailAddress.value
     )
 
-fun emailMessageFrom(f:()-> Session): (GreetingsMessage) -> MimeMessage =
+private fun emailMessageFrom(f:()-> Session): (GreetingsMessage) -> MimeMessage =
     {
         val msg = MimeMessage(f())
         msg.setFrom(InternetAddress("sender@email.com"))
@@ -37,14 +37,14 @@ fun emailMessageFrom(f:()-> Session): (GreetingsMessage) -> MimeMessage =
         msg
     }
 
-fun sessionFor(mailConfiguration: MailConfiguration): ()->Session = {
+private fun sessionFor(mailConfiguration: MailConfiguration): ()->Session = {
     val props = Properties()
     props["mail.smtp.host"] = mailConfiguration.smtpHost
     props["mail.smtp.port"] = "" + mailConfiguration.smtpPort
     Session.getInstance(props, null)
 }
 
-fun sendMail(toMailMessage: (GreetingsMessage) -> MimeMessage): (BirthdayEmployees) -> Either<MyError, Unit> = {
+private fun sendMail(toMailMessage: (GreetingsMessage) -> MimeMessage): (BirthdayEmployees) -> Either<MyError, Unit> = {
     try {
         it.employeeGroup
             .map(::greetingsMessageFrom)
@@ -56,7 +56,5 @@ fun sendMail(toMailMessage: (GreetingsMessage) -> MimeMessage): (BirthdayEmploye
     }
 }
 
-
-
-
-
+//PUBLIC API
+fun sendMailWith(host:String, port:Long):(BirthdayEmployees) -> Either<MyError, Unit>  = sendMail(emailMessageFrom(sessionFor(MailConfiguration(host, port))))

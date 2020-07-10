@@ -20,7 +20,6 @@ data class BirthDay(
 
 )
 
-
 data class EmailAddress(val value: String)
 
 data class Employees(val employeeGroup: List<Employee>)
