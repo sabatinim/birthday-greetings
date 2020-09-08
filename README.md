@@ -1,4 +1,4 @@
-##Problem
+## Problem
 write a program that Loads a set of employee records from a flat file
 Sends a greetings email to all employees whose birthday is today
 The flat file is a sequence of records, separated by newlines; this are the first few lines:
@@ -28,10 +28,10 @@ public static void main(String[] args) {
 ```
 Note that the collaborators of the birthdayService objects are injected in it. Ideally domain code should never use the new operator. The new operator is called from outside the domain code, to set up an aggregate of objects that collaborate together.
 
-##Goals
+## Goals
 The goal of this exercise is to come up with a solution that is
 
-###Testable
+### Testable
 we should be able to test the internal application logic with no need to ever send a real email.
 Flexible: we anticipate that the data source in the future could change from a flat file to a relational database, or perhaps a web service. We also anticipate that the email service could soon be replaced with a service that sends greetings through Facebook or some other social network.
 Well-designed: separate clearly the business logic from the infrastructure.
