@@ -32,7 +32,7 @@ class AcceptanceTest {
     }
 
     @Test
-    internal fun oneEmployeeIsBornTodayAnotherIsNoBornToday() {
+    internal fun oneEmployeeIsBornTodayAnotherIsNotBornToday() {
 
         val inMemoryLoadEmployee: () -> Either<Nothing, Employees> = {
             Right(
@@ -58,7 +58,6 @@ class AcceptanceTest {
         assertThat(message.body).isEqualTo("Happy birthday, dear TODAY_EMPLOYEE!")
 
         assertThat(result).isEqualTo(Right(Unit))
-
     }
 
     @Test

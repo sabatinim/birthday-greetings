@@ -15,9 +15,6 @@ fun sendGreetingsWith(
 ): () -> Either<MyError, Unit> = {
 
     loadEmployees()
-        .map {
-            filterEmployees(it)
-        }
+        .map(filterEmployees)
         .flatMap(sendBirthdayNotificationTo)
-            
 }
