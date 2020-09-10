@@ -1,3 +1,6 @@
+## Build
+[![Build Status](https://travis-ci.org/sabatinim/birthday-greetings.svg?branch=master)](https://travis-ci.org/sabatinim/birthday-greetings)
+
 ## Problem
 write a program that Loads a set of employee records from a flat file
 Sends a greetings email to all employees whose birthday is today
