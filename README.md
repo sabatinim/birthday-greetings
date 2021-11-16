@@ -1,5 +1,5 @@
 ## Build
-[![Build Status](https://travis-ci.org/sabatinim/birthday-greetings.svg?branch=master)](https://travis-ci.org/sabatinim/birthday-greetings)
+![CI](https://github.com/sabatinim/birthday-greetings/actions/workflows/main.yml/badge.svg)
 
 ## Problem
 write a program that Loads a set of employee records from a flat file
