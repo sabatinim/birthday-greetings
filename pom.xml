@@ -10,7 +10,7 @@
 
     <properties>
         <kotlin.version>1.5.31</kotlin.version>
-        <arrow.version>0.12.1</arrow.version>
+        <arrow.version>1.0.0</arrow.version>
     </properties>
 
     <dependencies>
@@ -22,17 +22,7 @@
 
         <dependency>
             <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-core-data</artifactId>
-            <version>${arrow.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-syntax</artifactId>
-            <version>${arrow.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.arrow-kt</groupId>
-            <artifactId>arrow-fx</artifactId>
+            <artifactId>arrow-core</artifactId>
             <version>${arrow.version}</version>
         </dependency>
 

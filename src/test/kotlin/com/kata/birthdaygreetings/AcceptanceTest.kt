@@ -1,8 +1,8 @@
 package com.kata.birthdaygreetings
 
 import arrow.core.Either
-import arrow.core.Left
-import arrow.core.Right
+import arrow.core.Either.Left
+import arrow.core.Either.Right
 import com.dumbster.smtp.SimpleSmtpServer
 import com.dumbster.smtp.SmtpMessage
 import com.kata.birthdaygreetings.domain.*

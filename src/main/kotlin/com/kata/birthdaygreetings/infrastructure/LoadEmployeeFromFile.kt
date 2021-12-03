@@ -1,8 +1,8 @@
 package com.kata.birthdaygreetings.infrastructure
 
 import arrow.core.Either
-import arrow.core.Left
-import arrow.core.Right
+import arrow.core.Either.Left
+import arrow.core.Either.Right
 import com.kata.birthdaygreetings.domain.*
 import java.io.File
 import java.io.FileNotFoundException

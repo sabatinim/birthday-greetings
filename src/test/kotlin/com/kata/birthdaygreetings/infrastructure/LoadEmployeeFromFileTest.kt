@@ -1,7 +1,7 @@
 package com.kata.birthdaygreetings.infrastructure
 
-import arrow.core.Left
-import arrow.core.Right
+import arrow.core.Either.Left
+import arrow.core.Either.Right
 import com.kata.birthdaygreetings.domain.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -13,7 +13,9 @@ class LoadEmployeeFromFileTest {
 
         val loadEmployeeFromFile = loadEmployeeFrom("./target/test-classes/employees.txt")
 
-        assertThat(loadEmployeeFromFile()).isEqualTo(Right(Employees(listOf(Employee("Marco","Sabatini", DateOfBirth(5,3,1983),
+        assertThat(loadEmployeeFromFile()).isEqualTo(Right(Employees(listOf(Employee("Marco",
+            "Sabatini",
+            DateOfBirth(5, 3, 1983),
             EmailAddress("address@email.com")
         )))))
     }
