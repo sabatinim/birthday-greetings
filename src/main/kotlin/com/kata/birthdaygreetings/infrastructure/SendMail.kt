@@ -2,6 +2,7 @@ package com.kata.birthdaygreetings.infrastructure
 
 import arrow.core.Either
 import arrow.core.Either.Left
+import arrow.core.Either.Right
 import com.kata.birthdaygreetings.domain.BirthdayEmployees
 import com.kata.birthdaygreetings.domain.Employee
 import com.kata.birthdaygreetings.domain.GreetingsMessage
@@ -49,7 +50,7 @@ private fun sendMail(toMailMessage: (GreetingsMessage) -> MimeMessage): (Birthda
             .map(::greetingsMessageFrom)
             .map(toMailMessage)
             .map(::sendmail)
-            .let { Either.Right(Unit) }
+            .let { Right(Unit) }
     } catch (e: Exception) {
         Left(MyError.SendMailError(e.localizedMessage))
     }
