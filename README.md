@@ -1,6 +1,8 @@
 ## Build
 ![CI](https://github.com/sabatinim/birthday-greetings/actions/workflows/main.yml/badge.svg)
 
+[Related blog post](https://dev.to/ticinoswcraft/fp-architecture-2o5i)
+
 ## Problem
 write a program that Loads a set of employee records from a flat file
 Sends a greetings email to all employees whose birthday is today
