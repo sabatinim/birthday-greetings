@@ -14,11 +14,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
 class AcceptanceTest {
-
-    val TODAY = LocalDateTime.now()
-    val TOMORROW = TODAY.plusDays(1)
-    val WRONG_PORT: Long = 99
-
     lateinit var mailServer: SimpleSmtpServer
 
     @BeforeEach
@@ -33,56 +28,48 @@ class AcceptanceTest {
 
     @Test
     internal fun oneEmployeeIsBornTodayAnotherIsNotBornToday() {
-
-        val inMemoryLoadEmployee: () -> Either<Nothing, Employees> = {
-            Right(
-                Employees(
-                    listOf(
-                        employeeBirthday(dateOfBirth(TODAY), "TODAY_EMPLOYEE"),
-                        employeeBirthday(dateOfBirth(TOMORROW), "TOMORROW_EMPLOYEE")
-                    )
-                )
-            )
-        }
-
         val sendGreetings: () -> Either<MyError, Unit> =
             sendGreetingsWith(
-                inMemoryLoadEmployee,
+                inMemoryLoadEmployees(),
                 todayBirthdayEmployees,
-                sendMailWith("localhost",9999)
+                sendMailWith("localhost", 9999)
             )
 
-        val result = sendGreetings()
+        assertThat(sendGreetings()).isEqualTo(Right(Unit))
 
         val message = mailServer.receivedEmail.next() as SmtpMessage
         assertThat(message.body).isEqualTo("Happy birthday, dear TODAY_EMPLOYEE!")
-
-        assertThat(result).isEqualTo(Right(Unit))
     }
 
     @Test
     internal fun mailConnectionError() {
+        val wrongPort: Long = 99
+
+        val sendGreetings: () -> Either<MyError, Unit> =
+            sendGreetingsWith(
+                inMemoryLoadEmployees(),
+                todayBirthdayEmployees,
+                sendMailWith("localhost", wrongPort)
+            )
+
+        assertThat(sendGreetings()).isEqualTo(Left(MyError.SendMailError("Couldn't connect to host, port: localhost, 99; timeout -1")))
+    }
+
+    private fun inMemoryLoadEmployees(): () -> Either<Nothing, Employees> {
+        val today = LocalDateTime.now()
+        val tomorrow = today.plusDays(1)
 
         val inMemoryLoadEmployee: () -> Either<Nothing, Employees> = {
             Right(
                 Employees(
                     listOf(
-                        employeeBirthday(dateOfBirth(TODAY), "TODAY_EMPLOYEE")
+                        employeeBirthday(dateOfBirth(today), "TODAY_EMPLOYEE"),
+                        employeeBirthday(dateOfBirth(tomorrow), "TOMORROW_EMPLOYEE")
                     )
                 )
             )
         }
-
-        val sendGreetings: () -> Either<MyError, Unit> =
-            sendGreetingsWith(
-                inMemoryLoadEmployee,
-                todayBirthdayEmployees,
-                sendMailWith("localhost", WRONG_PORT)
-            )
-
-        val result = sendGreetings()
-
-        assertThat(result).isEqualTo(Left(MyError.SendMailError("Couldn't connect to host, port: localhost, 99; timeout -1")))
+        return inMemoryLoadEmployee
     }
 
     private fun dateOfBirth(whenIsYourBirthday: LocalDateTime): DateOfBirth =
