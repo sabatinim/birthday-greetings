@@ -46,7 +46,7 @@ private fun sessionFor(mailConfiguration: MailConfiguration): ()->Session = {
 
 private fun sendMail(toMailMessage: (GreetingsMessage) -> MimeMessage): (BirthdayEmployees) -> Either<MyError, Unit> = {
     try {
-        it.employeeGroup
+        it.e.employeeGroup
             .map(::greetingsMessageFrom)
             .map(toMailMessage)
             .map(::sendmail)

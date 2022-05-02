@@ -2,7 +2,6 @@ package com.kata.birthdaygreetings
 
 import com.dumbster.smtp.SimpleSmtpServer
 import com.kata.birthdaygreetings.domain.sendGreetingsWith
-import com.kata.birthdaygreetings.domain.todayBirthdayEmployees
 import com.kata.birthdaygreetings.infrastructure.*
 
 fun main() {
@@ -12,7 +11,6 @@ fun main() {
     val sendGreetings =
         sendGreetingsWith(
             loadEmployeeFrom("employeesStorage.txt"),
-            todayBirthdayEmployees,
             sendMailWith("localhost", 9999)
         )
 

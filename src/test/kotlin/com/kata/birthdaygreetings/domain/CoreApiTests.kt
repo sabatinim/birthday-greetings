@@ -6,39 +6,26 @@ import java.time.LocalDateTime
 
 class CoreApiTests {
 
-    val TODAY = DateOfBirth(LocalDateTime.now().dayOfMonth, LocalDateTime.now().monthValue, LocalDateTime.now().year)
-    val TOMORROW = DateOfBirth(LocalDateTime.now().plusDays(1).dayOfMonth, LocalDateTime.now().plusDays(1).monthValue, LocalDateTime.now().plusDays(1).year)
+    private val TODAY = DateOfBirth(LocalDateTime.now().dayOfMonth, LocalDateTime.now().monthValue, LocalDateTime.now().year)
+    private val TOMORROW = DateOfBirth(LocalDateTime.now().plusDays(1).dayOfMonth, LocalDateTime.now().plusDays(1).monthValue, LocalDateTime.now().plusDays(1).year)
 
     @Test
     internal fun filterEmployees() {
+        val employees = employeesBirth(TODAY, TOMORROW)
 
-        val employees = Employees(
-            listOf(
-                employeeBirthday(TODAY),
-                employeeBirthday(TOMORROW)
-            )
-        )
-
-        val birthdayEmployees = todayBirthdayEmployees(employees)
-        assertThat(birthdayEmployees)
-            .isEqualTo(BirthdayEmployees(listOf(employeeBirthday(TODAY))))
+        assertThat(todayBirthdayEmployees(employees))
+            .isEqualTo(BirthdayEmployees(Employees(listOf(employeeWith(TODAY)))))
     }
 
     @Test
     internal fun noBirthdayEmployees() {
+        val employees = employeesBirth(TOMORROW, TOMORROW)
 
-        val employees = Employees(
-            listOf(
-                employeeBirthday(TOMORROW),
-                employeeBirthday(TOMORROW)
-            )
-        )
-
-        val birthdayEmployees = todayBirthdayEmployees(employees)
-
-        assertThat(birthdayEmployees)
-            .isEqualTo(BirthdayEmployees(emptyList()))
+        assertThat(todayBirthdayEmployees(employees))
+            .isEqualTo(BirthdayEmployees(Employees(emptyList())))
     }
 
-    private fun employeeBirthday(todayDateOfBirth: DateOfBirth) = Employee(dateOfBirth = todayDateOfBirth)
+    private fun employeeWith(todayDateOfBirth: DateOfBirth) = Employee(dateOfBirth = todayDateOfBirth)
+
+    private fun employeesBirth(vararg datesOfBirth: DateOfBirth): Employees =  Employees(datesOfBirth.map{ b-> employeeWith(b)})
 }

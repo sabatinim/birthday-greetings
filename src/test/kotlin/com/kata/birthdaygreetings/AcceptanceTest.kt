@@ -31,7 +31,6 @@ class AcceptanceTest {
         val sendGreetings: () -> Either<MyError, Unit> =
             sendGreetingsWith(
                 inMemoryLoadEmployees(),
-                todayBirthdayEmployees,
                 sendMailWith("localhost", 9999)
             )
 
@@ -48,7 +47,6 @@ class AcceptanceTest {
         val sendGreetings: () -> Either<MyError, Unit> =
             sendGreetingsWith(
                 inMemoryLoadEmployees(),
-                todayBirthdayEmployees,
                 sendMailWith("localhost", wrongPort)
             )
 

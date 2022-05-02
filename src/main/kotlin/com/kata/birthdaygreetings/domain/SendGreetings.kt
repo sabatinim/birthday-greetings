@@ -8,13 +8,8 @@ sealed class MyError {
     data class SendMailError(val msg: String) : MyError()
 }
 
-fun sendGreetingsWith(
-    loadEmployees: () -> Either<MyError, Employees>,
-    filterEmployees: (Employees) -> BirthdayEmployees,
-    sendBirthdayNotificationTo: (BirthdayEmployees) -> Either<MyError, Unit>
-): () -> Either<MyError, Unit> = {
+typealias LoadEmployees = () -> Either<MyError, Employees>
+typealias SendGreetingMessage = (BirthdayEmployees) -> Either<MyError, Unit>
+typealias SendGreetings = () -> Either<MyError, Unit>
 
-    loadEmployees()
-        .map(filterEmployees)
-        .flatMap(sendBirthdayNotificationTo)
-}
+fun sendGreetingsWith(f: LoadEmployees, g: SendGreetingMessage): SendGreetings = { f().map(::todayBirthdayEmployees).flatMap(g) }
